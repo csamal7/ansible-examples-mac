@@ -1,0 +1,91 @@
+---
+- name: Example playbook for Ansible variables
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  
+  roles:
+   - custom-role
+  
+  vars:
+    # 1. String Variable
+    main_playbook_variable: "Hello , world from the main playbook"
+  
+    # 2. Boolean Variable
+    is_enabled: true
+
+    # 3. List Variable
+    fruits:
+      - apple
+      - banana
+      - mango
+
+    # 4. Dictionary Varibale
+    fruit_prices:
+      apple: 260
+      banana: 40
+      mango: 300
+
+    #5. Referencing nested variable Dictionary
+    fruit_basket:
+      - name: John
+        fruits:
+           - apple
+           - banana
+      - name: Mary
+        fruits:
+           - banana
+           - mango
+
+    #6. Variable fom a different .yml
+    vars_file:
+      - my-vars.yml
+
+  tasks:
+    - name: String variable from - main_playbook_variable
+      debug: 
+        var: main_playbook_variable
+    
+    - name: Boolean Variable
+      debug:
+        msg: "Variable is true"
+      when: is_enabled
+
+    - name: List variable - Print list of fruits
+      debug:
+        var: fruits
+
+    - name: List variable - Print individual fruit
+      debug:
+        var: fruits[2]
+
+    - name: Dictionary variable - Print fruit prices
+      debug:
+        var: fruit_prices
+
+    - name: Dictionary variable - Print only price
+      debug:
+        var: fruit_prices.mango
+      # msg: "Price of Mango: {{ fruit_prices['mango'] }}"
+      
+    - name: get the price of Mango
+      command: echo "{{ fruit_prices['mango'] }}"
+      register: mango_price_as_registered_var
+
+    - name: Print the value of register variable
+      debug: 
+        var: mango_price_as_registered_var.stdout
+
+    - name: Get value of fruit from nested variable
+      debug:
+        var: fruit_prices[fruit_basket[1].fruits[0]]
+
+    # Jinja 2 filter on variables
+    - name: Using Jinja2 filters on variables
+      debug:
+        var: fruit_prices.keys() | list | map('upper') | list
+
+    # Getting variable from a different .yml file outside this playbook
+    - name: Getting variable value from different .yml
+      debug:
+        var: vars_from_my_vars_yml

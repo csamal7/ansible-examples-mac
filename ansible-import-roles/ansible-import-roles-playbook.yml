@@ -1,0 +1,8 @@
+---
+- name: Example Ansible playbook for imports
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  roles:
+    - custom-role
+    - install-apache

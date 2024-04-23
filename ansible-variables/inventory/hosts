@@ -1,0 +1,2 @@
+[aws-server]
+44.201.207.27 ansible_ssh_private_key_file=/Users/lordcommander/devOps/ansible-key

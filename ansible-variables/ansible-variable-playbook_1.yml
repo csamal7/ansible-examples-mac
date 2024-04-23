@@ -1,0 +1,21 @@
+---
+- name: Include variables from another YAML file
+  hosts: all
+  become: yes
+  remote_user: ubuntu
+  vars_files:
+    - my-vars.yml
+
+  tasks:
+    - name: Getting variable value from different .yml
+      debug:
+        var: vars_from_my_vars_yml
+   
+    - name: Get the variable value during runtime
+      debug:
+        var: version
+
+    - name: Print value of variable when var file is passed
+      debug:
+        var: other_variable
+

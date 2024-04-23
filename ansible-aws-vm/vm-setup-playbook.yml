@@ -1,0 +1,7 @@
+---
+
+- name: Demo Ansible script
+  hosts: all
+  remote_user: ubuntu
+  roles:
+    - python
